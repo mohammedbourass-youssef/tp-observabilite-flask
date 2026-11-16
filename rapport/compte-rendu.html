@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Compte rendu - TP Observabilité</title>
+<style>
+  @page { size: A4; margin: 17mm 15mm 17mm 15mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    font-size: 10.4pt;
+    line-height: 1.45;
+    color: #1f2937;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  h1, h2, h3, h4 { color: #123a5c; margin: 0; }
+  h2 {
+    font-size: 16pt;
+    margin: 0 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 2.5px solid #1f6fb2;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 12pt; margin: 16px 0 6px; page-break-after: avoid; }
+  h4 { font-size: 10.6pt; margin: 12px 0 4px; page-break-after: avoid; }
+  p { margin: 0 0 7px; text-align: justify; }
+  ul, ol { margin: 4px 0 10px; padding-left: 20px; }
+  li { margin-bottom: 3px; }
+  code {
+    font-family: Consolas, "Cascadia Mono", monospace;
+    font-size: 9pt;
+    background: #eef2f7;
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #0f3d63;
+  }
+  pre {
+    font-family: Consolas, "Cascadia Mono", monospace;
+    font-size: 8.4pt;
+    line-height: 1.35;
+    background: #0f1f30;
+    color: #dbe7f3;
+    padding: 9px 11px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 6px 0 10px;
+    page-break-inside: avoid;
+  }
+  pre .c { color: #7ea6c9; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 12px;
+    font-size: 9.1pt;
+    page-break-inside: avoid;
+  }
+  th {
+    background: #1f4e79;
+    color: #ffffff;
+    text-align: left;
+    padding: 5px 7px;
+    font-weight: 600;
+    border: 1px solid #1f4e79;
+  }
+  td {
+    border: 1px solid #c8d4e0;
+    padding: 4px 7px;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f4f7fa; }
+  .chapter { page-break-before: always; }
+  .nobreak { page-break-inside: avoid; }
+  .tag {
+    display: inline-block;
+    font-size: 7.6pt;
+    font-weight: 600;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    background: #e3eef8;
+    color: #1f4e79;
+    border: 1px solid #b8d0e6;
+    border-radius: 10px;
+    padding: 1px 8px;
+    vertical-align: middle;
+  }
+  .callout {
+    background: #eef6fb;
+    border-left: 4px solid #1f6fb2;
+    padding: 8px 12px;
+    margin: 8px 0 12px;
+    border-radius: 0 5px 5px 0;
+    font-size: 9.6pt;
+    page-break-inside: avoid;
+  }
+  .callout.warn { background: #fff7e8; border-left-color: #d98b00; }
+  .callout.ok { background: #eefaf1; border-left-color: #2e8b57; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* ---------- Page de garde ---------- */
+  .cover { height: 252mm; display: flex; flex-direction: column; page-break-after: always; }
+  .cover .band {
+    height: 9mm;
+    margin: -17mm -15mm 0;
+    background: linear-gradient(90deg, #123a5c 0%, #1f6fb2 55%, #3aa0d8 100%);
+  }
+  .cover .top { flex: 0 0 auto; padding-top: 22mm; }
+  .cover .kicker {
+    font-size: 10.5pt;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #4b6b87;
+    margin-bottom: 6px;
+  }
+  .cover h1 {
+    font-size: 40pt;
+    letter-spacing: 1px;
+    color: #123a5c;
+    margin: 0 0 8px;
+  }
+  .cover .rule {
+    width: 70mm;
+    height: 4px;
+    background: #1f6fb2;
+    margin: 0 0 12px;
+  }
+  .cover h2 {
+    border: none;
+    font-size: 16.5pt;
+    font-weight: 400;
+    color: #33556f;
+    margin: 0 0 4px;
+    padding: 0;
+    page-break-after: auto;
+  }
+  .cover .subtitle { font-size: 11.5pt; color: #5b7387; margin-bottom: 0; }
+  .cover-logos {
+    display: flex;
+    align-items: center;
+    gap: 12mm;
+    margin-top: 11mm;
+  }
+  .cover-logos .logo-item {
+    display: flex;
+    align-items: center;
+    gap: 3.5mm;
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: #33556f;
+  }
+  .cover-logos .logo-item img { width: 13mm; height: 13mm; }
+  .cover .meta { margin-top: 16mm; }
+  .cover .meta table { font-size: 10.5pt; width: 128mm; }
+  .cover .meta td { border: none; border-bottom: 1px solid #b9c8d6; padding: 7px 6px; background: transparent !important; }
+  .cover .meta td.k { color: #4b6b87; width: 42mm; font-weight: 600; }
+  .cover .spacer { flex: 1 1 auto; }
+  .cover .foot {
+    border-top: 1px solid #c8d4e0;
+    padding-top: 8px;
+    font-size: 8.8pt;
+    color: #6b7f91;
+  }
+
+  /* ---------- Sommaire ---------- */
+  .toc h2 { margin-bottom: 12px; }
+  .toc ol { list-style: none; padding-left: 0; counter-reset: toc; }
+  .toc li {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 5px 0;
+    border-bottom: 1px dotted #c8d4e0;
+    font-size: 10.5pt;
+  }
+  .toc .num { color: #1f6fb2; font-weight: 700; width: 22px; flex: 0 0 22px; }
+  .toc .dots { flex: 1 1 auto; border-bottom: 1px dotted transparent; }
+  .toc .sub { font-size: 9.5pt; color: #5b7387; padding: 2px 0 2px 28px; border: none; }
+
+  /* ---------- Schéma d'architecture ---------- */
+  .arch {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    margin: 10px 0 14px;
+    page-break-inside: avoid;
+  }
+  .arch .node {
+    flex: 1 1 0;
+    border: 2px solid #1f6fb2;
+    border-radius: 8px;
+    padding: 8px 6px;
+    text-align: center;
+    background: #f2f8fd;
+  }
+  .arch .node b { display: block; font-size: 9.8pt; color: #123a5c; }
+  .arch .node span { display: block; font-size: 8.3pt; color: #52697c; margin-top: 2px; }
+  .arch .node.alt { border-color: #6b8ba8; background: #f7fafc; }
+  .arch .arrow {
+    flex: 0 0 44px;
+    align-self: center;
+    text-align: center;
+    font-size: 7.6pt;
+    color: #1f6fb2;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .arch .arrow::before { content: "⟶"; display: block; font-size: 15pt; line-height: 1; }
+  .arch .arrow.back { color: #2e8b57; }
+  .arch .arrow.back::before { content: "⟵"; }
+
+  /* ---------- Emplacements des captures ---------- */
+  .shot {
+    border: 1px solid #c8d4e0;
+    background: #ffffff;
+    border-radius: 7px;
+    padding: 9px 11px 11px;
+    margin: 10px 0 14px;
+    page-break-inside: avoid;
+  }
+  .shot img.shotimg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid #b9c8d6;
+    border-radius: 4px;
+  }
+  .shot .head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .shot .head h4 { margin: 0; font-size: 10.4pt; }
+  .shot .file {
+    font-family: Consolas, monospace;
+    font-size: 7.9pt;
+    color: #4b6b87;
+    background: #eef3f8;
+    border: 1px solid #c8d4e0;
+    border-radius: 8px;
+    padding: 1px 7px;
+    white-space: nowrap;
+  }
+  .shot .frame {
+    height: 52mm;
+    border: 1px dashed #b9c8d6;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #8ba2b6;
+    font-size: 8.8pt;
+    background:
+      repeating-linear-gradient(45deg, #ffffff 0, #ffffff 12px, #f4f8fb 12px, #f4f8fb 24px);
+  }
+  .shot.tall .frame { height: 66mm; }
+  .shot .where { font-size: 8.4pt; color: #52697c; margin: 6px 0 0; }
+  .shot .where b { color: #123a5c; }
+  .check { font-size: 10pt; }
+
+  /* ---------- Divers ---------- */
+  .kv { font-size: 9.6pt; }
+  .small { font-size: 8.8pt; color: #5b7387; }
+  .center { text-align: center; }
+  .figcap { font-size: 8.4pt; color: #6b7f91; text-align: center; margin: -6px 0 12px; }
+  .sig { display: flex; gap: 30px; margin-top: 16px; }
+  .sig div { flex: 1; border-top: 1px solid #b9c8d6; padding-top: 5px; font-size: 8.8pt; color: #6b7f91; }
+</style>
+</head>
+<body>
+
+<!-- ============================ PAGE DE GARDE ============================ -->
+<div class="cover">
+  <div class="band"></div>
+  <div class="top">
+    <p class="kicker">Travaux pratiques &mdash; Observabilité</p>
+    <h1>Compte rendu</h1>
+    <div class="rule"></div>
+    <h2>Supervision d&rsquo;une application Flask avec Prometheus et Grafana</h2>
+    <p class="subtitle">Métriques applicatives, tableaux de bord, alertes et notifications webhook</p>
+
+    <div class="cover-logos">
+      <span class="logo-item"><img src="img/si-prometheus.svg" alt="Logo Prometheus">Prometheus</span>
+      <span class="logo-item"><img src="img/si-grafana.svg" alt="Logo Grafana">Grafana</span>
+    </div>
+  </div>
+
+  <div class="meta">
+    <table>
+      <tr><td class="k">Nom et prénom</td><td>MOHAMMED BOURASS</td></tr>
+      <tr><td class="k">Professeur</td><td>Youssef AOUNZOU</td></tr>
+      <tr><td class="k">Dépôt / projet</td><td>TP Obs &mdash; Flask &middot; Prometheus &middot; Grafana</td></tr>
+    </table>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="foot">
+    Document généré à partir des fichiers du projet. Les captures d&rsquo;écran du chapitre&nbsp;6
+    illustrent le comportement observé pendant la campagne de charge.
+  </div>
+</div>
+
+<!-- ============================ 1. OBJECTIFS ============================ -->
+<div class="chapter">
+  <h2>1. Objectifs du TP</h2>
+  <p>
+    Ce travail pratique a pour but de mettre en place une chaîne d&rsquo;observabilité complète autour
+    d&rsquo;une petite application web Flask. Il s&rsquo;agit de passer de la simple journalisation à une
+    supervision quantitative : collecter des métriques, les stocker dans une base de séries temporelles,
+    les visualiser, puis déclencher des alertes lorsque le comportement de l&rsquo;application dévie.
+  </p>
+  <table>
+    <tr><th style="width:26%">Axe de travail</th><th>Compétence visée</th></tr>
+    <tr><td>Instrumentation</td><td>Exposer des compteurs, des jauges et des histogrammes au format Prometheus avec <code>prometheus_client</code>.</td></tr>
+    <tr><td>Collecte</td><td>Configurer le <em>scraping</em> périodique de l&rsquo;application par Prometheus et vérifier les cibles.</td></tr>
+    <tr><td>Visualisation</td><td>Construire et provisionner des tableaux de bord Grafana (débit, erreurs, latence, disponibilité).</td></tr>
+    <tr><td>Alerte</td><td>Définir des règles d&rsquo;alerte, comprendre les états <em>pending</em> / <em>firing</em> et router les notifications.</td></tr>
+    <tr><td>Validation</td><td>Générer de la charge, provoquer des erreurs et de la latence, puis vérifier le comportement de la supervision.</td></tr>
+  </table>
+
+  <div class="callout">
+    <p><b>Fil rouge.</b> L&rsquo;application expose des points d&rsquo;entrée volontairement dégradables
+    (<code>/erreur</code>, <code>/aleatoire</code>, <code>/lent</code>, <code>/exception</code>) afin de
+    produire un trafic réaliste et de faire réagir les tableaux de bord et les alertes.</p>
+  </div>
+
+  <h3>1.1 Notions abordées</h3>
+  <ul>
+    <li><b>Métriques</b> : séries temporelles étiquetées (<em>labels</em>) de type compteur, histogramme et jauge.</li>
+    <li><b>Pull model</b> : Prometheus interroge l&rsquo;application toutes les 5&nbsp;secondes sur <code>/metrics</code>.</li>
+    <li><b>PromQL</b> : calcul de débits (<code>rate</code>), de quantiles (<code>histogram_quantile</code>) et de variations (<code>increase</code>).</li>
+    <li><b>Provisioning</b> : configuration de Grafana par fichiers YAML plutôt que par l&rsquo;interface graphique.</li>
+    <li><b>Alerting</b> : seuils maintenus pendant une durée (<code>for</code>), sévérités, routage vers un point de contact.</li>
+  </ul>
+</div>
+
+<!-- ============================ 2. ARCHITECTURE ============================ -->
+<div class="chapter">
+  <h2>2. Architecture de la solution</h2>
+  <p>
+    Trois conteneurs principaux sont orchestrés par Docker Compose sur un réseau privé nommé
+    <code>monitoring</code>. Un générateur de charge externe (<code>hey</code>) vient solliciter
+    l&rsquo;application pendant les tests.
+  </p>
+
+  <div class="arch">
+    <div class="node alt">
+      <b>Générateur de charge</b>
+      <span>hey (conteneur)</span>
+      <span>HTTP &middot; / /aleatoire /lent</span>
+    </div>
+    <div class="arrow">requêtes<br>HTTP</div>
+    <div class="node">
+      <b>Application Flask</b>
+      <span>app:5000</span>
+      <span>/metrics &middot; /webhook-alerte</span>
+    </div>
+    <div class="arrow back">scrape<br>toutes les 5 s</div>
+    <div class="node">
+      <b>Prometheus</b>
+      <span>prometheus:9090</span>
+      <span>règles + séries</span>
+    </div>
+    <div class="arrow">PromQL</div>
+    <div class="node alt">
+      <b>Grafana</b>
+      <span>grafana:3000</span>
+      <span>dashboards + alertes</span>
+    </div>
+  </div>
+  <p class="figcap">Figure 1 &mdash; Chaîne de supervision : collecte par tirage, visualisation, puis notification.</p>
+
+  <p>
+    Les alertes sont définies à deux niveaux complémentaires. Prometheus évalue les règles du fichier
+    <code>alertes.yml</code> et expose leur état via la série <code>ALERTS</code>, que Grafana affiche.
+    Grafana possède en parallèle ses propres règles (dossier <em>TP Obs</em>) et un point de contact
+    <em>webhook</em> qui rappelle l&rsquo;application sur <code>/webhook-alerte</code> : la boucle est
+    ainsi fermée et la notification est visible dans les journaux de l&rsquo;application.
+  </p>
+
+  <table>
+    <tr><th>Service</th><th>Image</th><th>Port hôte</th><th>Rôle</th><th>Dépend de</th></tr>
+    <tr><td><code>app</code></td><td>construite (python:3.12-slim)</td><td>5000</td><td>Application supervisée, expose <code>/metrics</code> et reçoit les webhooks</td><td>&mdash;</td></tr>
+    <tr><td><code>prometheus</code></td><td>prom/prometheus:latest</td><td>9090</td><td>Collecte, stockage et évaluation des règles</td><td>app</td></tr>
+    <tr><td><code>grafana</code></td><td>grafana/grafana:latest</td><td>3000</td><td>Tableaux de bord, alerting et point de contact webhook</td><td>prometheus</td></tr>
+  </table>
+
+  <div class="callout">
+    <p><b>Réseau Docker.</b> Prometheus et Grafana joignent l&rsquo;application par son nom de service
+    (<code>http://app:5000</code>). Depuis l&rsquo;hôte Windows, on utilise <code>localhost:5000</code>.
+    Cette distinction est une source classique d&rsquo;erreurs de configuration.</p>
+  </div>
+</div>
+
+<!-- ============================ 3. ENVIRONNEMENT ============================ -->
+<div class="chapter">
+  <h2>3. Environnement et prérequis</h2>
+  <table>
+    <tr><th style="width:32%">Élément</th><th>Version / valeur</th><th>Usage</th></tr>
+    <tr><td>Système d&rsquo;exploitation</td><td>Windows (PowerShell 5.1)</td><td>Exécution des commandes et du script de charge</td></tr>
+    <tr><td>Docker Engine</td><td>28.5.1</td><td>Conteneurisation des trois services</td></tr>
+    <tr><td>Docker Compose</td><td>format de fichier 3.8</td><td>Orchestration locale</td></tr>
+    <tr><td>Python (image)</td><td>3.12-slim</td><td>Exécution de l&rsquo;application Flask</td></tr>
+    <tr><td>Flask</td><td>3.0.3</td><td>Serveur web applicatif</td></tr>
+    <tr><td>prometheus-client</td><td>0.20.0</td><td>Exposition des métriques</td></tr>
+    <tr><td>Générateur de charge</td><td>williamyeh/hey (conteneur)</td><td>Tests de débit et de latence</td></tr>
+    <tr><td>Navigateur</td><td>Chrome / Edge</td><td>Consultation de Prometheus et Grafana</td></tr>
+  </table>
+
+  <h3>3.1 Ports exposés</h3>
+  <table>
+    <tr><th>URL</th><th>Service</th><th>Description</th></tr>
+    <tr><td><code>http://localhost:5000/</code></td><td>Application</td><td>Page d&rsquo;accueil et points d&rsquo;entrée de test</td></tr>
+    <tr><td><code>http://localhost:5000/metrics</code></td><td>Application</td><td>Métriques au format texte Prometheus</td></tr>
+    <tr><td><code>http://localhost:9090/targets</code></td><td>Prometheus</td><td>État des cibles de collecte</td></tr>
+    <tr><td><code>http://localhost:9090/alerts</code></td><td>Prometheus</td><td>Règles et alertes actives</td></tr>
+    <tr><td><code>http://localhost:3000/</code></td><td>Grafana</td><td>Tableaux de bord (admin / admin)</td></tr>
+  </table>
+
+  <h3>3.2 Démarrage rapide</h3>
+  <pre><span class="c"># Construire l'image applicative et démarrer la pile</span>
+docker compose up --build -d
+
+<span class="c"># Vérifier que les trois services sont sains</span>
+docker compose ps
+
+<span class="c"># Suivre les journaux de l'application (erreurs, webhooks)</span>
+docker compose logs -f app</pre>
+
+  <div class="callout warn">
+    <p><b>Prérequis.</b> Docker Desktop doit être démarré et le moteur accessible depuis PowerShell
+    (<code>docker info</code>). Les ports 3000, 5000 et 9090 doivent être libres.</p>
+  </div>
+
+</div>
+
+<!-- ============================ 4. MISE EN OEUVRE ============================ -->
+<div class="chapter">
+  <h2>4. Mise en œuvre</h2>
+
+  <h3>4.1 Instrumentation de l&rsquo;application Flask</h3>
+  <p>
+    Les métriques sont déclarées au chargement du module puis mises à jour dans des crochets Flask :
+    <code>before_request</code> mesure l&rsquo;instant de départ, <code>after_request</code> incrémente les
+    compteurs et observe la latence. Les routes techniques <code>/metrics</code> et
+    <code>/webhook-alerte</code> sont exclues du comptage pour éviter de fausser les indicateurs et toute
+    récursion.
+  </p>
+
+  <table>
+    <tr><th style="width:36%">Métrique</th><th>Type</th><th>Étiquettes</th><th>Signification</th></tr>
+    <tr><td><code>app_requetes_total</code></td><td>Counter</td><td><code>route</code>, <code>code</code></td><td>Nombre cumulé de requêtes traitées, par route et code HTTP</td></tr>
+    <tr><td><code>app_erreurs_total</code></td><td>Counter</td><td><code>route</code></td><td>Nombre d&rsquo;erreurs serveur (code &ge; 500)</td></tr>
+    <tr><td><code>app_latence_secondes</code></td><td>Histogram</td><td><code>route</code></td><td>Distribution des durées de traitement (moyenne et quantiles)</td></tr>
+  </table>
+
+  <pre><span class="c"># Déclaration des métriques (app.py)</span>
+REQUETES = Counter("app_requetes_total", "Nombre de requetes", ["route", "code"])
+ERREURS  = Counter("app_erreurs_total", "Nombre d'erreurs (code &gt;= 500)", ["route"])
+LATENCE  = Histogram("app_latence_secondes", "Duree des requetes", ["route"])
+
+<span class="c"># after_request : enregistrement du code, de la durée et des erreurs</span>
+route = request.url_rule.rule if request.url_rule else "inconnue"
+REQUETES.labels(route=route, code=response.status_code).inc()
+LATENCE.labels(route=route).observe(time.time() - request._debut)
+if response.status_code &gt;= 500:
+    ERREURS.labels(route=route).inc()</pre>
+
+  <p>
+    Le gestionnaire d&rsquo;exceptions global renvoie un code 500 pour les erreurs inattendues, tout en
+    conservant les codes natifs inférieurs à 500 (404, 405&hellip;). C&rsquo;est ce qui permet de
+    distinguer, dans les tableaux de bord, un trafic en erreur d&rsquo;un simple 404.
+  </p>
+
+  <h3>4.2 Points d&rsquo;entrée de l&rsquo;application</h3>
+  <table>
+    <tr><th style="width:23%">Route</th><th>Comportement</th><th>Usage dans le TP</th></tr>
+    <tr><td><code>/</code></td><td>Répond &laquo;&nbsp;Bonjour, application supervisee !&nbsp;&raquo;</td><td>Trafic normal (2xx)</td></tr>
+    <tr><td><code>/erreur</code></td><td>Renvoie 500 et journalise une erreur</td><td>Erreur contrôlée</td></tr>
+    <tr><td><code>/aleatoire?taux=40</code></td><td>Échoue aléatoirement selon un pourcentage (30&nbsp;% par défaut)</td><td>Génération d&rsquo;erreurs réalistes</td></tr>
+    <tr><td><code>/lent?max=3</code></td><td>Dort entre 0 et <em>max</em> secondes</td><td>Pic de latence</td></tr>
+    <tr><td><code>/exception</code></td><td>Provoque une division par zéro captée par le gestionnaire global</td><td>Exceptions non gérées</td></tr>
+    <tr><td><code>/nimportequoi</code></td><td>Renvoie 404 (compté dans les requêtes, pas dans les erreurs)</td><td>Vérifier la distinction 4xx / 5xx</td></tr>
+    <tr><td><code>/metrics</code></td><td>Expose toutes les séries au format Prometheus</td><td>Collecte par Prometheus</td></tr>
+    <tr><td><code>/webhook-alerte</code></td><td>Journalise les alertes reçues de Grafana (POST JSON)</td><td>Réception des notifications</td></tr>
+  </table>
+
+  <h3>4.3 Configuration de Prometheus</h3>
+  <p>
+    Prometheus collecte la cible <code>app:5000</code> toutes les 5&nbsp;secondes et charge le fichier de
+    règles <code>alertes.yml</code>. L&rsquo;intervalle court rend les variations visibles rapidement
+    pendant les tests.
+  </p>
+  <pre>global:
+  scrape_interval: 5s
+
+rule_files:
+  - alertes.yml
+
+scrape_configs:
+  - job_name: "application"
+    static_configs:
+      - targets: ["app:5000"]</pre>
+
+  <h3>4.4 Provisioning Grafana</h3>
+  <p>
+    Grafana est configuré par fichiers : la source de données Prometheus est déclarée avec l&rsquo;UID
+    <code>prometheus</code>, le dossier <em>TP Obs</em> est alimenté par le répertoire des tableaux de bord,
+    et les règles d&rsquo;alerte ainsi que le point de contact sont chargés au démarrage.
+  </p>
+  <table>
+    <tr><th style="width:32%">Fichier</th><th>Rôle</th></tr>
+    <tr><td><code>provisioning/datasources/prometheus.yml</code></td><td>Source de données par défaut vers <code>http://prometheus:9090</code></td></tr>
+    <tr><td><code>provisioning/dashboards/dashboards.yml</code></td><td>Fournisseur de tableaux de bord (dossier <em>TP Obs</em>, rafraîchissement 10 s)</td></tr>
+    <tr><td><code>dashboards/observabilite.json</code></td><td>Tableau de bord principal (débit, erreurs, latence, alertes)</td></tr>
+    <tr><td><code>dashboards/performance.json</code></td><td>Tableau de bord performance et disponibilité</td></tr>
+    <tr><td><code>provisioning/alerting/rules.yml</code></td><td>Règles d&rsquo;alerte Grafana</td></tr>
+    <tr><td><code>provisioning/alerting/contact-points.yml</code></td><td>Point de contact webhook et politique de notification</td></tr>
+  </table>
+
+  <h4>Tableau de bord &laquo;&nbsp;Observabilité&nbsp;&raquo;</h4>
+  <table>
+    <tr><th style="width:32%">Panneau</th><th>Expression principale</th></tr>
+    <tr><td>Requêtes / seconde</td><td><code>sum(rate(app_requetes_total[30s]))</code></td></tr>
+    <tr><td>Total requêtes</td><td><code>sum(app_requetes_total)</code></td></tr>
+    <tr><td>Total erreurs</td><td><code>sum(app_erreurs_total) or vector(0)</code></td></tr>
+    <tr><td>Taux d&rsquo;erreur (%)</td><td><code>100 * erreurs / requêtes</code> (rate 30 s)</td></tr>
+    <tr><td>Requêtes/s par route et par code</td><td><code>sum(rate(...)) by (route)</code> / <code>by (code)</code></td></tr>
+    <tr><td>Erreurs/s par route</td><td><code>sum(rate(app_erreurs_total[30s])) by (route)</code></td></tr>
+    <tr><td>Latence moyenne et p95</td><td><code>histogram_quantile(0.95, ...)</code> et <code>sum(rate(_sum))/sum(rate(_count))</code></td></tr>
+    <tr><td>Alertes actives</td><td><code>ALERTS{alertstate=~"firing|pending"}</code></td></tr>
+  </table>
+
+  <h4>Tableau de bord &laquo;&nbsp;Performance et disponibilité&nbsp;&raquo;</h4>
+  <p>
+    Ce second tableau de bord ajoute une variable de filtre <code>route</code>, l&rsquo;état de la cible
+    (<code>min(up{job="application"})</code>), la disponibilité sur 5 minutes, les quantiles p50 / p95 / p99,
+    une carte de chaleur de la distribution de latence, la répartition 2xx / 4xx / 5xx, l&rsquo;historique
+    des alertes et la liste des alertes Grafana.
+  </p>
+
+  <h3>4.5 Alertes et notification</h3>
+  <p>
+    Deux jeux de règles coexistent. Les règles Prometheus s&rsquo;appuient directement sur PromQL ; les
+    règles Grafana enchaînent une requête, une réduction (<em>last</em>) et un seuil.
+  </p>
+
+  <h4>Règles Prometheus (<code>alertes.yml</code>)</h4>
+  <table>
+    <tr><th>Alerte</th><th>Condition</th><th>Durée</th><th>Sévérité</th></tr>
+    <tr><td>TropDErreurs</td><td><code>increase(app_erreurs_total[1m]) &gt; 5</code></td><td>30 s</td><td>critical</td></tr>
+    <tr><td>TraficEleve</td><td><code>sum(rate(app_requetes_total[30s])) &gt; 10</code></td><td>30 s</td><td>warning</td></tr>
+    <tr><td>TauxErreurEleve</td><td><code>sum(increase(app_erreurs_total[1m])) &gt; 5</code></td><td>1 min</td><td>critical</td></tr>
+    <tr><td>AucunTrafic</td><td><code>sum(rate(app_requetes_total[2m])) == 0</code></td><td>2 min</td><td>info</td></tr>
+    <tr><td>ApplicationInjoignable</td><td><code>up{job="application"} == 0</code></td><td>15 s</td><td>critical</td></tr>
+  </table>
+
+  <h4>Règles Grafana (<code>provisioning/alerting/rules.yml</code>)</h4>
+  <table>
+    <tr><th>Alerte</th><th>Condition</th><th>Durée</th><th>Sévérité</th></tr>
+    <tr><td>Grafana - Trafic elevé</td><td>Débit &gt; 10 req/s</td><td>30 s</td><td>warning</td></tr>
+    <tr><td>Grafana - Taux d&rsquo;erreur eleve</td><td>Taux d&rsquo;erreur &gt; 5&nbsp;%</td><td>1 min</td><td>critical</td></tr>
+    <tr><td>Grafana - Latence p95 elevee</td><td>p95 &gt; 1 s</td><td>30 s</td><td>warning</td></tr>
+    <tr><td>Grafana - Application injoignable</td><td><code>min(up{job="application"}) &lt; 1</code></td><td>20 s</td><td>critical</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <p><b>Remarque d&rsquo;analyse.</b> La règle Prometheus <em>TauxErreurEleve</em> est libellée
+    &laquo;&nbsp;plus de 5&nbsp;% des requêtes en erreur&nbsp;&raquo; mais son expression compte un nombre
+    absolu d&rsquo;erreurs (<code>increase(...) &gt; 5</code>), sans division par le trafic. La version
+    Grafana corrige ce point avec un véritable pourcentage. Une amélioration cohérente consisterait à
+    aligner l&rsquo;expression Prometheus sur
+    <code>100 * sum(rate(app_erreurs_total[1m])) / sum(rate(app_requetes_total[1m])) &gt; 5</code>.</p>
+  </div>
+
+  <p>
+    Le point de contact <code>webhook-app</code> envoie un POST JSON vers
+    <code>http://app:5000/webhook-alerte</code>. L&rsquo;application parcourt le tableau
+    <code>alerts</code> et journalise, pour chaque alerte, son statut et son nom. La politique de
+    notification regroupe par <code>alertname</code> avec un premier envoi après 10&nbsp;s, un intervalle
+    de groupe de 30&nbsp;s et une répétition toutes les heures.
+  </p>
+</div>
+
+<!-- ============================ 5. TESTS ============================ -->
+<div class="chapter">
+  <h2>5. Procédure de test et génération de charge</h2>
+  <p>
+    Le script <code>test.ps1</code> enchaîne cinq phases de charge via le conteneur <code>hey</code>, en
+    ciblant l&rsquo;application exposée sur l&rsquo;hôte (<code>host.docker.internal:5000</code>). Chaque
+    phase vise un comportement précis de la supervision.
+  </p>
+  <table>
+    <tr><th style="width:9%">Phase</th><th>Commande ciblée</th><th>Durée / charge</th><th>Comportement attendu</th></tr>
+    <tr><td>1</td><td><code>/</code></td><td>30 s, 20 connexions</td><td>Trafic normal : débit stable, taux d&rsquo;erreur nul</td></tr>
+    <tr><td>2</td><td><code>/aleatoire?taux=40</code></td><td>45 s, 20 connexions</td><td>Environ 40&nbsp;% de 500 : taux d&rsquo;erreur élevé, alertes d&rsquo;erreurs</td></tr>
+    <tr><td>3</td><td><code>/lent?max=3</code></td><td>45 s, 20 connexions</td><td>Latence p95 en hausse, alerte de latence</td></tr>
+    <tr><td>4</td><td><code>/exception</code></td><td>300 requêtes, 20 connexions</td><td>Pic de 500 et journaux d&rsquo;exceptions non gérées</td></tr>
+    <tr><td>5</td><td><code>/nimportequoi</code></td><td>20 s, 10 connexions</td><td>404 visibles dans les requêtes, mais hors compteur d&rsquo;erreurs</td></tr>
+  </table>
+
+  <pre><span class="c"># Lancer la campagne de charge depuis la racine du projet</span>
+.\test.ps1
+
+<span class="c"># Vérification manuelle d'un point d'entrée</span>
+Invoke-WebRequest http://localhost:5000/ -UseBasicParsing | Select-Object StatusCode
+
+<span class="c"># Observer les métriques brutes</span>
+Invoke-WebRequest http://localhost:5000/metrics -UseBasicParsing | Select-Object -Expand Content</pre>
+
+  <div class="callout">
+    <p><b>Astuce.</b> Pour rendre l&rsquo;incident visible dans Grafana, conserver la plage temporelle
+    &laquo;&nbsp;15&nbsp;dernières minutes&nbsp;&raquo; et un rafraîchissement automatique de 5&nbsp;s.
+    L&rsquo;alerte passe d&rsquo;abord à l&rsquo;état <em>pending</em> pendant la durée <code>for</code>,
+    puis à <em>firing</em> si la condition persiste.</p>
+  </div>
+
+  <h3>5.1 Protocole d&rsquo;observation</h3>
+  <ol>
+    <li>Démarrer la pile et vérifier la cible Prometheus (<em>UP</em>).</li>
+    <li>Ouvrir les deux tableaux de bord Grafana et noter l&rsquo;état au repos.</li>
+    <li>Exécuter les phases de charge une par une, en laissant 30&nbsp;s d&rsquo;observation entre deux.</li>
+    <li>Relever l&rsquo;heure de début de chaque phase pour la retrouver sur les graphiques.</li>
+    <li>Consulter <code>/alerts</code> dans Prometheus et la page d&rsquo;alerting Grafana.</li>
+    <li>Vérifier dans les journaux de l&rsquo;application la réception des notifications webhook.</li>
+    <li>Capturer les écrans demandés au chapitre&nbsp;6, puis compléter le tableau du chapitre&nbsp;7.</li>
+  </ol>
+</div>
+
+<!-- ============================ 6. CAPTURES ============================ -->
+<div class="chapter">
+  <h2>6. Captures d&rsquo;écran à insérer</h2>
+  <p>
+    Les captures ci-dessous ont été réalisées <b>pendant et juste après</b> la campagne de charge, afin
+    que les graphiques et les alertes soient significatifs. Elles illustrent successivement le
+    déploiement, l&rsquo;exposition des métriques, la collecte, les tableaux de bord, l&rsquo;alerting et
+    la notification webhook.
+  </p>
+
+  <table class="check">
+    <tr><th style="width:6%">N°</th><th>Écran / URL</th><th>Élément à capturer</th><th style="width:24%">Fichier</th><th style="width:7%">Fait</th></tr>
+    <tr><td>1</td><td>PowerShell / Docker Desktop</td><td>Conteneurs <em>Up</em></td><td>capture-01-docker-ps.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>2</td><td><code>localhost:5000/metrics</code></td><td>Métriques brutes et libellés</td><td>capture-02-metrics.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>3</td><td><code>localhost:9090/targets</code></td><td>Cible <code>application</code> à l&rsquo;état UP</td><td>capture-03-targets.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>4</td><td>Grafana &mdash; Observabilité</td><td>Tableau de bord complet sous charge</td><td>capture-04-dashboard-observabilite.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>5</td><td>Grafana &mdash; Performance</td><td>Latence p50/p95/p99 et disponibilité</td><td>capture-05-dashboard-performance.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>6</td><td>Grafana &mdash; Alerting</td><td>Règle en état <em>Firing</em></td><td>capture-06-grafana-alerting.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>7</td><td><code>localhost:9090/alerts</code></td><td>Alertes Prometheus actives</td><td>capture-07-prometheus-alerts.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>8</td><td>Journaux <code>docker compose logs app</code></td><td>Ligne <em>NOTIFICATION GRAFANA</em></td><td>capture-08-webhook-logs.png</td><td class="center">&#10004;</td></tr>
+    <tr><td>9</td><td>Journaux <code>docker compose logs app</code></td><td>Trace d&rsquo;exception non gérée</td><td>capture-09-exception-logs.png</td><td class="center">&#10004;</td></tr>
+  </table>
+
+  <div class="shot">
+    <div class="head"><h4>Capture 1 &mdash; Conteneurs en cours d&rsquo;exécution</h4><span class="file">capture-01-docker-ps.png</span></div>
+    <img class="shotimg" src="captures/capture-01-docker-ps.png" alt="Conteneurs Docker en cours d'exécution">
+    <p class="where">Les trois services (<code>app</code>, <code>prometheus</code>, <code>grafana</code>) sont à l&rsquo;état <em>Up</em> et les ports sont correctement publiés.</p>
+  </div>
+
+  <div class="shot">
+    <div class="head"><h4>Capture 2 &mdash; Exposition des métriques</h4><span class="file">capture-02-metrics.png</span></div>
+    <img class="shotimg" src="captures/capture-02-metrics.png" alt="Métriques exposées par l'application">
+    <p class="where">Séries exposées par l&rsquo;application sur <code>/metrics</code> : compteurs de requêtes et d&rsquo;erreurs, histogramme de latence et leurs étiquettes.</p>
+  </div>
+
+  <div class="shot">
+    <div class="head"><h4>Capture 3 &mdash; Cible Prometheus</h4><span class="file">capture-03-targets.png</span></div>
+    <img class="shotimg" src="captures/capture-03-targets.png" alt="Cible Prometheus à l'état UP">
+    <p class="where">La cible <code>application</code> est <em>UP</em> : Prometheus collecte <code>app:5000</code> toutes les 5 secondes.</p>
+  </div>
+</div>
+
+<div>
+  <div class="shot tall">
+    <div class="head"><h4>Capture 4 &mdash; Tableau de bord Observabilité</h4><span class="file">capture-04-dashboard-observabilite.png</span></div>
+    <img class="shotimg" src="captures/capture-04-dashboard-observabilite.png" alt="Tableau de bord Observabilité">
+    <p class="where">Vue d&rsquo;ensemble sous charge : débit par route et par code HTTP, erreurs, taux d&rsquo;erreur, latence moyenne et p95, alertes actives.</p>
+  </div>
+
+  <div class="shot tall">
+    <div class="head"><h4>Capture 5 &mdash; Tableau de bord Performance et disponibilité</h4><span class="file">capture-05-dashboard-performance.png</span></div>
+    <img class="shotimg" src="captures/capture-05-dashboard-performance.png" alt="Tableau de bord Performance et disponibilité">
+    <p class="where">Disponibilité, latence p50/p95/p99, distribution de la latence et répartition des codes HTTP pendant les tests.</p>
+  </div>
+
+  <div class="shot">
+    <div class="head"><h4>Capture 6 &mdash; Alerte Grafana en cours</h4><span class="file">capture-06-grafana-alerting.png</span></div>
+    <img class="shotimg" src="captures/capture-06-grafana-alerting.png" alt="Règle d'alerte Grafana en état Firing">
+    <p class="where">Règle Grafana passée à l&rsquo;état <em>Firing</em> avec sa valeur courante et sa sévérité.</p>
+  </div>
+
+  <div class="shot">
+    <div class="head"><h4>Capture 7 &mdash; Alertes Prometheus actives</h4><span class="file">capture-07-prometheus-alerts.png</span></div>
+    <img class="shotimg" src="captures/capture-07-prometheus-alerts.png" alt="Alertes Prometheus actives">
+    <p class="where">Alertes Prometheus actives : <em>TraficEleve</em> en <em>firing</em>, <em>TropDErreurs</em> et <em>TauxErreurEleve</em> en <em>pending</em>, avec sévérité et expression.</p>
+  </div>
+
+  <div class="shot">
+    <div class="head"><h4>Capture 8 &mdash; Notification webhook reçue</h4><span class="file">capture-08-webhook-logs.png</span></div>
+    <img class="shotimg" src="captures/capture-08-webhook-logs.png" alt="Notification webhook dans les journaux">
+    <p class="where">Notification reçue par l&rsquo;application : ligne <code>NOTIFICATION GRAFANA [...]</code> et réponse 204 sur <code>/webhook-alerte</code>.</p>
+  </div>
+
+  <div class="shot">
+    <div class="head"><h4>Capture 9 &mdash; Exception non gérée dans les journaux</h4><span class="file">capture-09-exception-logs.png</span></div>
+    <img class="shotimg" src="captures/capture-09-exception-logs.png" alt="Trace d'exception non gérée dans les journaux">
+    <p class="where">Trace d&rsquo;exception non gérée (<code>ZeroDivisionError</code>) journalisée par l&rsquo;application pendant la phase 4.</p>
+  </div>
+</div>
+
+<!-- ============================ 7. RESULTATS ============================ -->
+<div class="chapter">
+  <h2>7. Résultats et analyse</h2>
+  <p>
+    Compléter le tableau ci-dessous avec les valeurs observées pendant la campagne de charge, puis
+    commenter les écarts éventuels par rapport aux attentes.
+  </p>
+  <table>
+    <tr><th style="width:27%">Indicateur</th><th>Attendu</th><th>Observé</th><th style="width:22%">Écart / commentaire</th></tr>
+    <tr><td>Cible Prometheus <code>up</code></td><td>1 (UP)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Débit phase 1</td><td>Stable, &gt; 10 req/s</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Taux d&rsquo;erreur phase 2</td><td>Proche de 40&nbsp;%</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Latence p95 phase 3</td><td>&gt; 1 s (seuil d&rsquo;alerte)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Erreurs phase 4</td><td>Pic de 500 et exceptions journalisées</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Phase 5 (404)</td><td>Requêtes visibles, compteur d&rsquo;erreurs inchangé</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Alerte TraficEleve</td><td><em>Firing</em> pendant les phases 1 à 4</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Alerte de taux d&rsquo;erreur</td><td><em>Firing</em> pendant la phase 2</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Alerte de latence</td><td><em>Firing</em> pendant la phase 3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    <tr><td>Notification webhook</td><td>Ligne visible dans les journaux</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+  </table>
+
+  <h3>7.1 Points d&rsquo;analyse attendus</h3>
+  <ul>
+    <li>Le débit calculé par <code>rate(...[30s])</code> correspond-il au trafic réellement envoyé par <code>hey</code> ?</li>
+    <li>Le taux d&rsquo;erreur mesuré est-il cohérent avec le paramètre <code>taux=40</code> ?</li>
+    <li>Le pic de latence est-il visible simultanément sur la moyenne et sur le p95 ? Pourquoi le p95 réagit-il plus fortement ?</li>
+    <li>Les alertes passent-elles par l&rsquo;état <em>pending</em> avant <em>firing</em>, et le délai respecte-t-il la durée <code>for</code> ?</li>
+    <li>Les 404 de la phase 5 incrémentent-ils <code>app_requetes_total</code> sans incrémenter <code>app_erreurs_total</code> ?</li>
+  </ul>
+
+  <div class="callout ok">
+    <p><b>Interprétation attendue.</b> La supervision doit permettre d&rsquo;identifier la nature d&rsquo;une
+    dégradation : erreurs applicatives (compteur d&rsquo;erreurs et taux), ralentissement (latence p95),
+    ou perte de disponibilité (<code>up == 0</code>). C&rsquo;est la combinaison de ces signaux qui rend
+    l&rsquo;observabilité exploitable, et non un seul indicateur isolé.</p>
+  </div>
+</div>
+
+<!-- ============================ 8. DIFFICULTES ============================ -->
+<div class="chapter">
+  <h2>8. Difficultés rencontrées et solutions</h2>
+  <table>
+    <tr><th style="width:34%">Difficulté</th><th>Cause probable</th><th>Solution</th></tr>
+    <tr><td>La cible Prometheus reste <em>DOWN</em></td><td>L&rsquo;application n&rsquo;écoute pas ou le nom d&rsquo;hôte est incorrect</td><td>Vérifier <code>docker compose ps</code> et utiliser <code>app:5000</code> depuis le réseau Docker</td></tr>
+    <tr><td>Aucune métrique applicative visible</td><td>Trafic uniquement sur des routes techniques ou application non sollicitée</td><td>Générer du trafic sur <code>/</code> puis consulter <code>/metrics</code></td></tr>
+    <tr><td>Les 404 gonflent le taux d&rsquo;erreur</td><td>Confusion entre erreurs client et erreurs serveur</td><td>Le compteur ne prend que les codes &ge; 500 ; vérifier l&rsquo;expression utilisée</td></tr>
+    <tr><td>Le webhook ne journalise rien</td><td>Point de contact non chargé ou URL hors réseau Docker</td><td>Contrôler <code>contact-points.yml</code> et l&rsquo;URL <code>http://app:5000/webhook-alerte</code></td></tr>
+    <tr><td>Tableau de bord absent dans Grafana</td><td>Chemin de provisioning incorrect ou JSON invalide</td><td>Vérifier le volume <code>/var/lib/grafana/dashboards</code> et les journaux Grafana</td></tr>
+    <tr><td>Alertes jamais <em>firing</em></td><td>Durée <code>for</code> non atteinte ou seuil trop haut</td><td>Maintenir la charge plus longtemps et ajuster le seuil pendant les tests</td></tr>
+    <tr><td>Port déjà utilisé</td><td>Un service local occupe 3000, 5000 ou 9090</td><td>Libérer le port ou modifier le mappage dans <code>docker-compose.yml</code></td></tr>
+  </table>
+
+</div>
+
+<!-- ============================ 9. CONCLUSION ============================ -->
+<div class="chapter">
+  <h2>9. Conclusion et pistes d&rsquo;amélioration</h2>
+  <p>
+    La pile mise en place couvre l&rsquo;ensemble de la boucle d&rsquo;observabilité : l&rsquo;application
+    expose des métriques étiquetées, Prometheus les collecte et évalue des règles, Grafana les restitue
+    dans deux tableaux de bord provisionnés et route les alertes vers un webhook applicatif. Les scénarios
+    de charge montrent que les indicateurs réagissent de façon cohérente aux erreurs, aux ralentissements et
+    aux exceptions.
+  </p>
+  <p>
+    Au-delà de la validation fonctionnelle, le TP met en évidence plusieurs bonnes pratiques : exclure les
+    routes techniques du comptage, distinguer les erreurs client des erreurs serveur, faire reposer les
+    alertes sur un ratio plutôt que sur un volume brut, et versionner la configuration (provisioning) plutôt
+    que de la saisir dans l&rsquo;interface.
+  </p>
+
+  <h3>9.1 Améliorations envisagées</h3>
+  <ul>
+    <li>Aligner l&rsquo;expression Prometheus <em>TauxErreurEleve</em> sur un véritable pourcentage et supprimer le doublon avec <em>TropDErreurs</em>.</li>
+    <li>Ajouter des métriques métier (nombre de commandes, panier moyen, files d&rsquo;attente) et un exportateur de journaux.</li>
+    <li>Persister les données Prometheus et Grafana dans des volumes nommés pour survivre aux redémarrages.</li>
+    <li>Ajouter un <em>blackbox exporter</em> pour tester la disponibilité de bout en bout et un <em>Alertmanager</em> pour le routage avancé (courriel, Slack).</li>
+    <li>Verrouiller les secrets (mot de passe Grafana, futures clés d&rsquo;API) dans un fichier d&rsquo;environnement non versionné.</li>
+    <li>Industrialiser la vérification en intégration continue (démarrage de la pile et tests de fumée sur les métriques).</li>
+  </ul>
+
+  <div class="callout">
+    <p><b>Bilan.</b> Le dispositif est fonctionnel, reproductible et lisible. Il constitue une base saine
+    pour aborder des architectures plus larges (Kubernetes, Loki, Tempo, OpenTelemetry) sans changer les
+    principes : mesurer, corréler, alerter, puis agir.</p>
+  </div>
+
+  <div class="sig">
+    <div>Date et signature de l&rsquo;étudiant</div>
+    <div>Observation de l&rsquo;enseignant</div>
+  </div>
+</div>
+
+<!-- ============================ ANNEXES ============================ -->
+<div class="chapter">
+  <h2>Annexe A &mdash; Commandes utiles</h2>
+  <pre><span class="c"># Démarrer / arrêter / reconstruire</span>
+docker compose up --build -d
+docker compose down
+docker compose down -v
+
+<span class="c"># État et journaux</span>
+docker compose ps
+docker compose logs -f app
+docker compose logs -f prometheus
+docker compose logs -f grafana
+
+<span class="c"># Recharger la configuration Prometheus (si activé)</span>
+docker compose exec prometheus \
+  wget -qO- --post-data="" http://localhost:9090/-/reload
+
+<span class="c"># Campagne de charge</span>
+.\test.ps1
+
+<span class="c"># Vérifications HTTP</span>
+Invoke-WebRequest http://localhost:5000/ -UseBasicParsing
+Invoke-WebRequest http://localhost:5000/metrics -UseBasicParsing</pre>
+
+  <h2 style="margin-top:18px;">Annexe B &mdash; Arborescence du projet</h2>
+  <pre>TP Obs/
+├── app.py                     <span class="c"># application Flask instrumentée</span>
+├── Dockerfile                 <span class="c"># image python:3.12-slim</span>
+├── docker-compose.yml         <span class="c"># app + prometheus + grafana</span>
+├── requirements.txt           <span class="c"># flask, prometheus-client</span>
+├── prometheus.yml             <span class="c"># scrape 5 s + rule_files</span>
+├── alertes.yml                <span class="c"># règles d'alerte Prometheus</span>
+├── test.ps1                   <span class="c"># 5 phases de charge (hey)</span>
+└── grafana/
+    ├── dashboards/
+    │   ├── observabilite.json
+    │   └── performance.json
+    └── provisioning/
+        ├── alerting/
+        │   ├── contact-points.yml
+        │   └── rules.yml
+        ├── dashboards/dashboards.yml
+        └── datasources/prometheus.yml</pre>
+
+  <p class="small center" style="margin-top:14px;">Fin du compte rendu &mdash; TP Observabilité</p>
+</div>
+
+</body>
+</html>

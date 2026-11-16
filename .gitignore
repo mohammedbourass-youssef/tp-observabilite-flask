@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env
+
+# Système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+
+# Logs et fichiers temporaires
+*.log
+rapport/_new.pdf
+rapport/_tmp*.pdf
+rapport/_cover_check.png
